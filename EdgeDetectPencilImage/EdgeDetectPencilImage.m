@@ -1,6 +1,40 @@
 function EdgeDetectPencilImage
-I = imread('colorlena.jpg');
+I = imread('multifighter.jpg');
+[M,N,X] = size(I);
+P = imread('pencil.jpg');
+P = rgb2gray(P);
+P = im2double(P);
+P = imresize(P, [M, N]);
 I = im2double(I);
+I_hsi = rgb2hsv(I);
+I_h = I_hsi(:,:,1);
+I_s = I_hsi(:,:,2);
+I_v = I_hsi(:,:,3);
+I_s = I_s .* P;
+I_edgeS = edge(I_v, 'Sobel');
+I_edgeP = edge(I_v, 'Prewitt');
+I_edgeR = edge(I_v, 'Roberts');
+I_edgeC = edge(I_v, 'Canny');
+I_edge = I_edgeS + I_edgeP + I_edgeR + I_edgeC; 
+I_edge(I_edge>1) = 1;
+I_edge = logical(I_edge);
+I_v(I_edge) = 0;
+I_out = cat(3, I_h, I_s, I_v);
+I_out_rgb = hsv2rgb(I_out);
+imwrite(I_out_rgb, 'pencilcolormultifighter.jpg');
+
+I_gray = rgb2gray(I);
+I_gray_edgeS = edge(I_gray, 'Sobel');
+I_gray_edgeP = edge(I_gray, 'Prewitt');
+I_gray_edgeR = edge(I_gray, 'Roberts');
+I_gray_edgeC = edge(I_gray, 'Canny');
+I_gray_edge = I_gray_edgeS + I_gray_edgeP + I_gray_edgeR + I_gray_edgeC; 
+I_gray_edge(I_gray_edge > 1) = 1;
+I_out_gray = 1 - I_gray_edge;
+imwrite(I_out_gray, 'pencilgraymultifighter.jpg');
+
+end
+%{
 IR = I(:,:,1);
 IG = I(:,:,2);
 IB = I(:,:,3);
@@ -37,7 +71,8 @@ I_edge_B(I_edge_B == 4) = 255;
 I_edge_all = cat(3, I_edge_R, I_edge_G, I_edge_B); 
 I_edge_all = 255 - I_edge_all;
 imshow(I_edge_all);
-end
+%}
+
 
 
 %{
