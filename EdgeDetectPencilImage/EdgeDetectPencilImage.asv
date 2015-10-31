@@ -22,20 +22,12 @@ I_edge_cannyB = edge(IB, 'Canny');
 I_edge_R = I_edge_sobelR + I_edge_prewittR + I_edge_robertsR + I_edge_cannyR;
 I_edge_G = I_edge_sobelG + I_edge_prewittG + I_edge_robertsG + I_edge_cannyG;
 I_edge_B = I_edge_sobelB + I_edge_prewittB + I_edge_robertsB + I_edge_cannyB;
-I_edge_R(I_edge_R == 1) = 64;
-I_edge_R(I_edge_R == 2) = 128;
-I_edge_R(I_edge_R == 3) = 192;
-I_edge_R(I_edge_R == 4) = 255;
-I_edge_G(I_edge_G == 1) = 64;
-I_edge_G(I_edge_G == 2) = 128;
-I_edge_G(I_edge_G == 3) = 192;
-I_edge_G(I_edge_G == 4) = 255;
-I_edge_B(I_edge_B == 1) = 64;
-I_edge_B(I_edge_B == 2) = 128;
-I_edge_B(I_edge_B == 3) = 192;
-I_edge_B(I_edge_B == 4) = 255;
-I_edge_all = cat(3, I_edge_R, I_edge_G, I_edge_B); 
-I_edge_all = 255 - I_edge_all;
+I_edge_R()
+I_edge_all = I_edge_sobel + I_edge_prewitt + I_edge_roberts + I_edge_canny;
+I_edge_all(find(I_edge_all) > 1) = 1;
+I_edge_all = 1 - I_edge_all;
+             
+
 imshow(I_edge_all);
 end
 
