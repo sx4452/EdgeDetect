@@ -1,6 +1,8 @@
 function EdgeDetectPencilImage
-I = imread('multifighter.jpg');
-[M,N,X] = size(I);
+name = 'ziyao2';
+readname = [name, '.jpg'];
+I = imread(readname);
+[M,N,~] = size(I);
 P = imread('pencil.jpg');
 P = rgb2gray(P);
 P = im2double(P);
@@ -21,7 +23,8 @@ I_edge = logical(I_edge);
 I_v(I_edge) = 0;
 I_out = cat(3, I_h, I_s, I_v);
 I_out_rgb = hsv2rgb(I_out);
-imwrite(I_out_rgb, 'pencilcolormultifighter.jpg');
+writename = ['pencilcolor', name, '.jpg'];
+imwrite(I_out_rgb, writename);
 
 I_gray = rgb2gray(I);
 I_gray_edgeS = edge(I_gray, 'Sobel');
@@ -31,7 +34,8 @@ I_gray_edgeC = edge(I_gray, 'Canny');
 I_gray_edge = I_gray_edgeS + I_gray_edgeP + I_gray_edgeR + I_gray_edgeC; 
 I_gray_edge(I_gray_edge > 1) = 1;
 I_out_gray = 1 - I_gray_edge;
-imwrite(I_out_gray, 'pencilgraymultifighter.jpg');
+writename = ['pencilgray', name, '.jpg'];
+imwrite(I_out_gray, writename);
 
 end
 %{
